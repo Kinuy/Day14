@@ -56,5 +56,28 @@ public class Main {
         System.out.println(course);
         System.out.println(course.getTeacher());
 
+        Course course2 = Course.builder()
+                .id(2)
+                .name("Lombok")
+                .students(course.students)
+                .teacher(new Teacher(2,"Klaus","Bio"))
+                .build();
+
+        Teacher teacher1 = Teacher.builder()
+                .id(1)
+                .name("Paul")
+                .subject("Bio")
+                .build();
+
+        Teacher teacher2 = Teacher.builder()
+                .id(2)
+                .name("Kay")
+                .subject("Geo")
+                .build();
+
+        Teacher teacher3 = teacher1.withSubject("Math");
+        System.out.println(teacher3);
+
+        System.out.println(course2);
     }
 }
