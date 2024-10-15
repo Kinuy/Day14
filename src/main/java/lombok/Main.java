@@ -1,5 +1,13 @@
 package lombok;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
+/*
+import static jdk.internal.classfile.impl.DirectCodeBuilder.build;
+*/
+
 public class Main {
     public static void main(String[] args) {
 
@@ -79,5 +87,67 @@ public class Main {
         System.out.println(teacher3);
 
         System.out.println(course2);
+
+
+
+        // Bonus
+
+        // create some students , teachers, courses
+        createStudents();
+        createCourses(createStudents());
+
+        // create a university
+        University university = University.builder()
+                .courses(createCourses(createStudents()))
+                .students(createStudents())
+                .build();
+
+
+
+        UniversityService universityService = UniversityService.builder().build();
+        universityService.calcAverageGradeOfCourse(course2);
+        universityService.calcAverageGradeOfUniversity(university);
+        universityService.filterStudentsByGrade(university);
+    }
+
+    public static List<Student> createStudents() {
+        List<Student> students = new ArrayList<>();
+        String[] names = {"Paul","Marie","Lea","Carl","Ben"};
+        int[] ids = {1,2,3,4,5};
+        String[] adresses = {"SchnellStraße 1","SchnellStraße 2","SchnellStraße 3","SchnellStraße 4","SchnellStraße 5"};
+        int[] grades = {1,4,7,2,3};
+        for(int i = 0; i < names.length; i++) {
+            students.add(Student.builder()
+                    .id(ids[i])
+                    .name(names[i])
+                    .address(adresses[i])
+                    .grade(grades[i])
+                    .build());
+        }
+        return students;
+    }
+    public static List<Course> createCourses(List<Student> students) {
+        List<Course> courses = new ArrayList<>();
+
+        int[] ids = {1,2,3,4,5};
+        String[] names = {"Math","Bio","Geo","Sport","Art"};
+        String[] nameTeacher = {"Paul","Lars","Emma","Olaf","Paulina"};
+
+        Collections.shuffle(students);
+        List<Student> shuffledStudents = students.subList(0, 2);
+
+        for(int i = 0; i < names.length; i++) {
+            courses.add(Course.builder()
+                    .id(ids[i])
+                    .name(names[i])
+                    .teacher(Teacher.builder()
+                            .id(i)
+                            .name(nameTeacher[i])
+                            .subject(names[i])
+                            .build())
+                    .students(shuffledStudents)
+                    .build());
+        }
+        return courses;
     }
 }
